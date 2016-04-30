@@ -1,0 +1,36 @@
+{
+  "name": "benderobot",
+  "version": "0.0.1",
+  "description": "Bender the facebook messenger bot.",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "PORT=8888 DEBUG=benderobot:* nodemon npm start",
+    "lint": "eslint --color src/ test/ --ext .js",
+	"start": "node src/start.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/danillouz/benderobot.git"
+  },
+  "keywords": [],
+  "author": "Daniel Illouz",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/danillouz/benderobot/issues"
+  },
+  "homepage": "https://github.com/danillouz/benderobot#readme",
+  "engines": {
+    "node": "6.0.0"
+  },
+  "devDependencies": {
+    "debug": "^2.2.0",
+    "eslint": "^2.9.0",
+    "nodemon": "^1.9.2"
+  },
+  "dependencies": {
+    "body-parser": "^1.15.0",
+    "co": "^4.6.0",
+    "express": "^4.13.4",
+    "statuses": "^1.2.1"
+  }
+}
