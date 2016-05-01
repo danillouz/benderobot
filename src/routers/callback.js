@@ -55,7 +55,8 @@ function create() {
 						senderId: sender.id,
 						recipientId: recipient.id,
 						messageText: message.text
-					}));
+					}))
+					.filter(({ messageText }) => !!messageText);
 
 				log('messagingEvents: ', JSON.stringify(messagingEvents, null, 4));
 
