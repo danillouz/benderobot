@@ -13,7 +13,7 @@ function create() {
 
 	router
 		.route('/')
-		.get(function (req, res) {
+		.get(function sendStatus(req, res) {
 			res.jsonp({
 				status: 'ok',
 				version: pjson.version

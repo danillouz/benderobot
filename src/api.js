@@ -18,7 +18,7 @@ function create() {
 		start() {
 			return Promise
 				.resolve()
-				.then( () => {
+				.then(() => {
 					const port = process.env.PORT || 8888;
 
 					server = app.listen(port);
@@ -30,7 +30,7 @@ function create() {
 		stop() {
 			return Promise
 				.resolve()
-				.then( () => {
+				.then(() => {
 					server.close();
 				});
 		}

@@ -3,6 +3,7 @@
 const bodyParser = require('body-parser');
 const herr = require('./utils/http-error');
 const statusRouter = require('./routers/status');
+const callbackRouter = require('./routers/callback');
 const debug = require('debug');
 
 const log = debug('benderobot:middleware');
@@ -16,6 +17,7 @@ function init(app) {
 	app.use(bodyParser.json());
 
 	app.use('/status', statusRouter.create());
+	app.use('/callback', callbackRouter.create());
 
 	app.use(function notFoundMiddleware(req, res, next) {
 		log(`route "${req.url}" doesn't exist`);
@@ -29,7 +31,7 @@ function init(app) {
 	app.use(function errorMiddleware(err, req, res, next) { // eslint-disable-line no-unused-vars
 		let error = err.normalized
 			? err
-			: herr.create(null, err.message);
+			: herr.create(undefined, err.message);
 
 		log(`error "${error}"`);
 
