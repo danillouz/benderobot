@@ -46,7 +46,7 @@ function create() {
 			function processPayload(req, res, next) {
 				const messagingEvents = req.body.entry
 					.map(entry => entry.messaging)
-					.reduce((currentEntry, nextEntry) => currentEntry.concat(nextEntry))
+					.reduce((currentEntry, nextEntry) => currentEntry.concat(nextEntry), [ ])
 					.map(({
 						sender = {},
 						recipient = {},

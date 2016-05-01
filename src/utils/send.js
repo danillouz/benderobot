@@ -27,11 +27,11 @@ function send(senderId, messageText) {
 	return co(function *sendMessage() {
 		const options = {
 			method: 'POST',
-			body: {
+			body: JSON.stringify({
 				recipient: { id: senderId },
 				message: { text: messageText }
-			},
-			headers: { contentType: 'application/json' }
+			}),
+			headers: { 'Content-Type': 'application/json' }
 		};
 
 		const res = yield fetch(URL, options);
