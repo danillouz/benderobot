@@ -4,7 +4,7 @@
   "description": "Bender the facebook messenger bot.",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "PORT=8888 DEBUG=benderobot:* nodemon npm start",
+    "dev": "DEBUG=benderobot:* nodemon npm start",
     "lint": "eslint --color src/ test/ --ext .js",
     "start": "node src/start.js"
   },
