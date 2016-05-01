@@ -6,7 +6,7 @@ const herr = require('../utils/http-error');
 const send = require('../utils/send');
 
 const log = debug('benderobot:routers/callback');
-const verifyToken = process.env.VERIFY_TOKEN;
+const VERIFY_TOKEN = process.env.VERIFY_TOKEN;
 
 /**
  * Creates an `express.js` Router instance.
@@ -19,7 +19,7 @@ function create() {
 	router
 		.route('/')
 		.get(function verifyToken(req, res) {
-			if (req.query['hub.verify_token'] === verifyToken) {
+			if (req.query['hub.verify_token'] === VERIFY_TOKEN) {
 				res.send(req.query['hub.challenge']);
 			}
 
