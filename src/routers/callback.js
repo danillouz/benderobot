@@ -18,15 +18,13 @@ function create() {
 
 	router
 		.route('/')
-		.get(function verifyToken(req, res, next) {
-			if (req.query['hub.verify_token'] !== verifyToken) {
-				return next(herr.create(
-					401,
-					'Incorrect validation token'
-				));
+		.get(function verifyToken(req, res) {
+			if (req.query['hub.verify_token'] === verifyToken) {
+				res.send(req.query['hub.challenge']);
 			}
 
-			res.send(req.query['hub.challenge']);
+			// Facebook can't ping if response status is NOT 200.
+			res.send('Error, wrong validation token');
 		})
 		.post(
 			function validatePayload(req, res, next) {
