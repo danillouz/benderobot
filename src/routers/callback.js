@@ -19,15 +19,17 @@ function create() {
 	router
 		.route('/')
 		.get(function verifyToken(req, res) {
-			if (req.query['hub.verify_token'] === VERIFY_TOKEN) {
-				res.send(req.query['hub.challenge']);
+			if (req.query['hub.verify_token'] !== VERIFY_TOKEN) {
+				// Facebook can't ping if response status is NOT 200.
+				return res.send('Error, wrong validation token');
 			}
 
-			// Facebook can't ping if response status is NOT 200.
-			res.send('Error, wrong validation token');
+			res.send(req.query['hub.challenge']);
 		})
 		.post(
 			function validatePayload(req, res, next) {
+				log('payload: ', JSON.stringify(req.body, null, 4));
+
 				const entry = req.body.entry;
 				const isArray = Array.isArray(entry);
 
@@ -44,7 +46,7 @@ function create() {
 			function processPayload(req, res, next) {
 				const messagingEvents = req.body.entry
 					.map(entry => entry.messaging)
-					.reduce( (currentEntry, nextEntry) => currentEntry.concat(nextEntry))
+					.reduce((currentEntry, nextEntry) => currentEntry.concat(nextEntry))
 					.map(({
 						sender = {},
 						recipient = {},
