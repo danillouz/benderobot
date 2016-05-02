@@ -1,11 +1,13 @@
 'use strict';
 
 const express = require('express');
+const co = require('co');
 const debug = require('debug');
 const herr = require('../utils/http-error');
 const send = require('../utils/send');
 
 const log = debug('benderobot:routers/callback');
+
 const VERIFY_TOKEN = process.env.VERIFY_TOKEN;
 
 /**
@@ -44,51 +46,55 @@ function create() {
 			},
 
 			function processPayload(req, res, next) {
-				const messagingEvents = req.body.entry
-					.map(entry => entry.messaging)
-					.reduce((currentEntry, nextEntry) => currentEntry.concat(nextEntry), [ ])
-					.map(({
-						sender = {},
-						recipient = {},
-						message = {}
-					}) => ({
-						senderId: sender.id,
-						recipientId: recipient.id,
-						messageText: message.text
-					}))
-					.filter(({ messageText }) => !!messageText);
+				co(function *() {
+					for (const entry of req.body.entry) {
+						for (const {
+							sender: { id },
+							optin,
+							message: { text },
+							delivery,
+							postback
+						} of entry) {
+							if (optin) {
+								log('authentication webhook');
+								log('optin: ', JSON.stringify(optin, null, 4));
 
-				log('messagingEvents: ', JSON.stringify(messagingEvents, null, 4));
+								// NIY
+							}
 
-				req.messagingEvents = messagingEvents;
+							if (message) {
+								log('message received webhook');
+								log('message: ', JSON.stringify(message, null, 4));
 
-				next();
-			},
+								const res = yield send(id, text);
 
-			function sendMessages(req, res, next) {
-				Promise
-					.all(
-						req.messagingEvents.map(({
-							senderId,
-							messageText
-						}) => send(senderId, messageText))
-					)
-					.then(responses => ({
-						ok: responses.filter(({ status }) => status === 200),
-						err: responses.filter(({ status }) => status !== 200)
-					}))
-					.then(responses => {
-						log('ok responses: ', JSON.stringify(responses.ok, null, 4));
-						log('err responses: ', JSON.stringify(responses.err, null, 4));
+								log('send message res: ', JSON.stringify(res, null, 4));
+							}
 
-						res.sendStatus(200);
-					})
-					.catch(err => {
-						next(herr.create(
-							500,
-							err.message
-						));
-					});
+							if (delivery) {
+								log('message delivery webhook');
+								log('delivery: ', JSON.stringify(delivery, null, 4));
+
+								// NIY
+							}
+
+							if (postback) {
+								log('postback webhook');
+								log('postback: ', JSON.stringify(postback, null, 4));
+
+								// NIY
+							}
+						}
+					}
+				})
+				.catch(err => {
+					next(herr.create(
+						500,
+						err.message
+					));
+				});
+
+				res.sendStatus(200);
 			}
 		);
 
