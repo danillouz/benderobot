@@ -30,7 +30,8 @@ function create() {
 		})
 		.post(
 			function validatePayload(req, res, next) {
-				log('payload: ', JSON.stringify(req.body, null, 4));
+				log('req.query: ', JSON.stringify(req.query, null, 4));
+				log('req.body: ', JSON.stringify(req.body, null, 4));
 
 				const entry = req.body.entry;
 				const isArray = Array.isArray(entry);
@@ -54,7 +55,7 @@ function create() {
 							message: { text },
 							delivery,
 							postback
-						} of entry) {
+						} of entry.messaging) {
 							if (optin) {
 								log('authentication webhook');
 								log('optin: ', JSON.stringify(optin, null, 4));

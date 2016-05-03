@@ -1,6 +1,11 @@
 # benderobot
 Bender the facebook messenger bot **[WIP]**.
 
+![benderobot](https://raw.githubusercontent.com/danillouz/benderobot/master/img/benderobot.png "benderobot")
+
+## API status
+Check the API status [here](https://benderobot.herokuapp.com/status)
+
 ## Facebook quick start
 The API is being built following the [quick start quide](https://developers.facebook.com/docs/messenger-platform/quickstart).
 
