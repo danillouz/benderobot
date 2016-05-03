@@ -46,7 +46,7 @@ function create() {
 				next();
 			},
 
-			function processPayload(req, res, next) {
+			function processPayload(req, res) {
 				co(function *() {
 					for (const entry of req.body.entry) {
 						for (const {
@@ -89,10 +89,8 @@ function create() {
 					}
 				})
 				.catch(err => {
-					next(herr.create(
-						500,
-						err.message
-					));
+					log(`process payload error: ${err}`);
+					log(err.stack);
 				});
 
 				res.sendStatus(200);
