@@ -52,7 +52,7 @@ function create() {
 						for (const {
 							sender: { id },
 							optin,
-							message: { text },
+							message,
 							delivery,
 							postback
 						} of entry.messaging) {
@@ -67,7 +67,7 @@ function create() {
 								log('message received webhook');
 								log('message: ', JSON.stringify(message, null, 4));
 
-								const res = yield send(id, text);
+								const res = yield send(id, message.text);
 
 								log('send message res: ', JSON.stringify(res, null, 4));
 							}
