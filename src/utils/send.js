@@ -11,35 +11,31 @@ const API = 'https://graph.facebook.com/v2.6/me/messages';
 const URL = `${API}?access_token=${PAGE_ACCESS_TOKEN}`;
 
 /**
- * Sends a text message using the facebook send API.
+ * Sends a message using the facebook send API.
  *
  * https://developers.facebook.com/docs/messenger-platform/send-api-reference
  *
- * @param  {String} senderId 	- id of the person sending a message
- * @param  {String} messageText - message
+ * @param  {String} senderId - id of the person sending a message
+ * @param  {Object} message  - text or attachment (image or template)
  *
  * @return {Promise} Resolves with the response body
  */
-function send(senderId, messageText) {
+function send(senderId, message) {
 	log(`sending message on behalf of: "${senderId}"`);
-	log(`sending message text: "${messageText}"`);
+	log(`sending message: "${message}"`);
 
 	return co(function *sendMessage() {
 		const options = {
 			method: 'POST',
 			body: JSON.stringify({
 				recipient: { id: senderId },
-				message: { text: messageText }
+				message
 			}),
 			headers: { 'Content-Type': 'application/json' }
 		};
 
 		const res = yield fetch(URL, options);
 		const json = yield res.json();
-
-		log('json: ', JSON.stringify(json, null, 4));
-
-		json.status = res.status;
 
 		return json;
 	});

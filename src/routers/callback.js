@@ -2,8 +2,10 @@
 
 const express = require('express');
 const co = require('co');
+const productHunt = require('product-hunt');
 const debug = require('debug');
 const herr = require('../utils/http-error');
+const makeMessage = require('../utils/make-message');
 const send = require('../utils/send');
 
 const log = debug('benderobot:routers/callback');
@@ -22,7 +24,7 @@ function create() {
 		.route('/')
 		.get(function verifyToken(req, res) {
 			if (req.query['hub.verify_token'] !== VERIFY_TOKEN) {
-				// Facebook can't ping if response status is NOT 200.
+				// Facebook can't ping if the response status is NOT 200.
 				return res.send('Error, wrong validation token');
 			}
 
@@ -47,7 +49,7 @@ function create() {
 			},
 
 			function processPayload(req, res) {
-				co(function *() {
+				co(function *processAndSend() {
 					for (const entry of req.body.entry) {
 						for (const {
 							sender: { id },
@@ -67,7 +69,20 @@ function create() {
 								log('message received webhook');
 								log('message: ', JSON.stringify(message, null, 4));
 
-								const res = yield send(id, message.text);
+								const posts = yield productHunt.exec();
+								const elements = posts
+									.slice(0, 5)
+									.map(({
+										name, url, tagline, thumbnail
+									}) => ({
+										title: name,
+										item_url: `https://producthunt.com/${shortened_url}`,
+										image_url: thumbnail.shortened_link,
+										subtitle: tagline
+									}));
+
+								const payload = makeMessage.templateGeneric(elements);
+								const res = yield send(id, payload);
 
 								log('send message res: ', JSON.stringify(res, null, 4));
 							}
