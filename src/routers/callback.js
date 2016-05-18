@@ -76,7 +76,7 @@ function create() {
 										name, url, tagline, thumbnail
 									}) => ({
 										title: name,
-										item_url: `https://producthunt.com/${shortened_url}`,
+										item_url: `https://producthunt.com/${url}`,
 										image_url: thumbnail.shortened_link,
 										subtitle: tagline
 									}));
