@@ -24,10 +24,12 @@ function text(text) {
  */
 function templateGeneric(elements) {
 	return {
-		type: 'template',
-		payload: {
-			template_type: 'generic',
-			elements
+		attachment: {
+			type: 'template',
+			payload: {
+				template_type: 'generic',
+				elements
+			}
 		}
 	};
 }
