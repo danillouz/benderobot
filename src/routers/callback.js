@@ -71,19 +71,21 @@ function create() {
 
 								const posts = yield productHunt.exec();
 								const elements = posts
-									.slice(0, 5)
+									.slice(0, 10)
 									.map(({
 										name, url, tagline, thumbnail
 									}) => ({
 										title: name,
 										item_url: `https://producthunt.com/${url}`,
-										image_url: thumbnail.shortened_link,
+										image_url: thumbnail.image_url,
 										subtitle: tagline
 									}));
 
 								const payload = makeMessage.templateGeneric(elements);
 								const res = yield send(id, payload);
 
+								log('elements: ', JSON.stringify(elements, null, 4));
+								log('payload: ', JSON.stringify(payload, null, 4));
 								log('send message res: ', JSON.stringify(res, null, 4));
 							}
 
