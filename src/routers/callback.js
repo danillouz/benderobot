@@ -70,7 +70,7 @@ function create() {
 								log('message received webhook');
 								log('message: ', JSON.stringify(message, null, 4));
 
-								const command = message.toLowerCase();
+								const command = message.text.toLowerCase();
 								const isHello = /hi|hello/.test(command);
 								const isProductHunt = /product hunt/.test(command);
 
