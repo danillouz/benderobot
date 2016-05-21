@@ -5,6 +5,19 @@ Bender the facebook messenger bot **[WIP]**.
 
 [Retro Bender image attribution](https://dribbble.com/shots/2686048-I-Am-Retro-Bender)
 
+## What can Bender do?
+Bender can say hello:
+
+![bender says hello](img/bender-hi.gif)
+
+Bender can fetch todays most popular posts from [Product Hunt](https://www.producthunt.com/):
+
+![bender fetches from product hunt](img/bender-ph.gif)
+
+_Note that you can't find Benderobot on facebook (yet), so
+if you want to try it out, you need to run the API yourself
+by following the instructions._
+
 ## Facebook quick start
 The API is being built following the [quick start quide](https://developers.facebook.com/docs/messenger-platform/quickstart).
 
