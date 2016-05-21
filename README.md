@@ -3,6 +3,8 @@ Bender the facebook messenger bot **[WIP]**.
 
 ![benderobot](https://raw.githubusercontent.com/danillouz/benderobot/master/img/benderobot.png "benderobot")
 
+[Retro Bender image attribution](https://dribbble.com/shots/2686048-I-Am-Retro-Bender)
+
 ## Facebook quick start
 The API is being built following the [quick start quide](https://developers.facebook.com/docs/messenger-platform/quickstart).
 

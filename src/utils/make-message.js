@@ -1,5 +1,9 @@
 'use strict';
 
+const debug = require('debug');
+
+const log = debug('benderobot:utils/make-message');
+
 /**
  * Makes a `text` message payload conform the facebook
  * send API.
@@ -9,9 +13,11 @@
  * @return {Object} Message payload Object
  */
 function text(text) {
-	return {
-		text
-	};
+	const payload = { text };
+
+	log('text payload: ', JSON.stringify(payload, null, 4));
+
+	return payload;
 }
 
 /**
@@ -23,7 +29,7 @@ function text(text) {
  * @return {Object} Message payload Object
  */
 function templateGeneric(elements) {
-	return {
+	const payload = {
 		attachment: {
 			type: 'template',
 			payload: {
@@ -32,6 +38,10 @@ function templateGeneric(elements) {
 			}
 		}
 	};
+
+	log('generict template payload: ', JSON.stringify(payload, null, 4));
+
+	return payload;
 }
 
 module.exports = { text, templateGeneric };

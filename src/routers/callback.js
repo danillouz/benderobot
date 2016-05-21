@@ -4,8 +4,9 @@ const express = require('express');
 const co = require('co');
 const productHunt = require('product-hunt');
 const debug = require('debug');
-const herr = require('../utils/http-error');
+const httpErr = require('../utils/http-error');
 const makeMessage = require('../utils/make-message');
+const getProfile = require('../utils/get-profile');
 const send = require('../utils/send');
 
 const log = debug('benderobot:routers/callback');
@@ -39,7 +40,7 @@ function create() {
 				const isArray = Array.isArray(entry);
 
 				if (!entry || !isArray) {
-					return next(herr.create(
+					return next(httpErr.create(
 						400,
 						'Invalid request payload'
 					));
@@ -69,23 +70,52 @@ function create() {
 								log('message received webhook');
 								log('message: ', JSON.stringify(message, null, 4));
 
-								const posts = yield productHunt.exec();
-								const elements = posts
-									.slice(0, 10)
-									.map(({
-										name, url, tagline, thumbnail
-									}) => ({
-										title: name,
-										item_url: `https://producthunt.com/${url}`,
-										image_url: thumbnail.image_url,
-										subtitle: tagline
-									}));
+								const command = message.toLowerCase();
+								const isHello = /hi|hello/.test(command);
+								const isProductHunt = /product hunt/.test(command);
 
-								const payload = makeMessage.templateGeneric(elements);
+								if (isHello) {
+									log('command is "hello"');
+
+									const profile = yield getProfile(id);
+
+									log('fetched profile: ', JSON.stringify(profile, null, 4));
+
+									const payload = makeMessage.text(`Hello ${profile.first_name}`);
+									const res = yield send(id, payload);
+
+									log('send message res: ', JSON.stringify(res, null, 4));
+
+									continue;
+								}
+
+								if (isProductHunt) {
+									log('command is "product hunt"');
+
+									const maxItems = 10;
+									const posts = yield productHunt.exec();
+									const elements = posts
+										.slice(0, maxItems)
+										.map(({
+											name, url, tagline, thumbnail = { }
+										}) => ({
+											title: name,
+											item_url: `https://producthunt.com/${url}`,
+											image_url: thumbnail.image_url,
+											subtitle: tagline
+										}));
+
+									const payload = makeMessage.templateGeneric(elements);
+									const res = yield send(id, payload);
+
+									log('send message res: ', JSON.stringify(res, null, 4));
+
+									continue;
+								}
+
+								const payload = makeMessage.text('Bite my shiny metal ass!');
 								const res = yield send(id, payload);
 
-								log('elements: ', JSON.stringify(elements, null, 4));
-								log('payload: ', JSON.stringify(payload, null, 4));
 								log('send message res: ', JSON.stringify(res, null, 4));
 							}
 
