@@ -23,7 +23,7 @@ function *fetchRecentRants() {
 	const res = yield fetch(`${API}${queryParams}`);
 	const json = yield res.json();
 
-	return json;
+	return json.rants;
 }
 
 module.exports = {
