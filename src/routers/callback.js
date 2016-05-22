@@ -121,11 +121,11 @@ function create() {
 									const rants = yield devrant.recent();
 									const elements = rants
 										.map(({
-											id, text, score, tags, attached_image:image = {}
+											id, text, score, attached_image:image = { }
 										}) => ({
 											title: `score: ${score}`,
 											item_url: `https://www.devrant.io/rants/${id}`,
-											image_url: image.url,
+											image_url: image.url || 'https://www.devrant.io/static/devrant/img/cartoon1.png',
 											subtitle: text
 										}));
 
