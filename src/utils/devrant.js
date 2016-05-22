@@ -8,15 +8,18 @@ const debug = require('debug');
 const API = 'https://www.devrant.io/api/devrant/rants?app=3?sort=recent&limit=10';
 
 /**
- * Retrieves the 10 recent rants from the public devrant API.
+ * Retrieves rants from the public devrant API.
+ *
+ * @param {String} sort  - type of items to fetch (algo/recent/top)
+ * @param {Number} limit - number of items to fetch
  *
  * @return {Promise} Resolves with the response body
  */
-function *fetchRecentRants() {
+function *fetchRants(sort = 'algo', limit = 10) {
 	const params = {
 		app: 3,
-		sort: 'recent',
-		limit: 10
+		sort,
+		limit
 	};
 
 	const queryParams = url.format({ query: params });
@@ -27,5 +30,5 @@ function *fetchRecentRants() {
 }
 
 module.exports = {
-	recent: co.wrap(fetchRecentRants)
+	fetch: co.wrap(fetchRants)
 };

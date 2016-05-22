@@ -119,16 +119,14 @@ function create() {
 									log('command is "devrant"');
 
 									const URL_BASE = 'https://www.devrant.io';
-									const DEFAULT_IMG = `${URL_BASE}/static/devrant/img/landing/simple-guy2.png`;
-
-									const rants = yield devrant.recent();
+									const rants = yield devrant.fetch();
 									const elements = rants
 										.map(({
 											id,
 											text,
 											score,
 											attached_image: {
-												url = DEFAULT_IMG
+												url = `${URL_BASE}/static/devrant/img/cartoon2.png`
 											}
 										}) => ({
 											title: `score: ${score}`,
