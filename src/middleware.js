@@ -1,7 +1,7 @@
 'use strict';
 
 const bodyParser = require('body-parser');
-const herr = require('./utils/http-error');
+const httpErr = require('./utils/http-error');
 const statusRouter = require('./routers/status');
 const callbackRouter = require('./routers/callback');
 const debug = require('debug');
@@ -22,7 +22,7 @@ function init(app) {
 	app.use(function notFoundMiddleware(req, res, next) {
 		log(`route "${req.url}" doesn't exist`);
 
-		next(herr.create(
+		next(httpErr.create(
 			404,
 			'The requested route doesn\'t exist'
 		));
@@ -31,7 +31,7 @@ function init(app) {
 	app.use(function errorMiddleware(err, req, res, next) { // eslint-disable-line no-unused-vars
 		let error = err.normalized
 			? err
-			: herr.create(undefined, err.message);
+			: httpErr.create(undefined, err.message);
 
 		log(`error "${error}"`);
 

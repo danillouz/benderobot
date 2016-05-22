@@ -7,6 +7,7 @@ const debug = require('debug');
 const httpErr = require('../utils/http-error');
 const makeMessage = require('../utils/make-message');
 const getProfile = require('../utils/get-profile');
+const devrant = require('../utils/devrant');
 const send = require('../utils/send');
 
 const log = debug('benderobot:routers/callback');
@@ -73,6 +74,7 @@ function create() {
 								const command = message.text.toLowerCase();
 								const isHello = /hi|hello/.test(command);
 								const isProductHunt = /product hunt/.test(command);
+								const isDevrant = /devrant/.test(command);
 
 								if (isHello) {
 									log('command is "hello"');
@@ -103,6 +105,28 @@ function create() {
 											item_url: `https://producthunt.com/${url}`,
 											image_url: thumbnail.image_url,
 											subtitle: tagline
+										}));
+
+									const payload = makeMessage.templateGeneric(elements);
+									const res = yield send(id, payload);
+
+									log('send message res: ', JSON.stringify(res, null, 4));
+
+									continue;
+								}
+
+								if (isDevrant) {
+									log('command is "devrant"');
+
+									const rants = yield devrant.recent();
+									const elements = rants
+										.map(({
+											id, text, score, tags, attached_image:image = {}
+										}) => ({
+											title: `score: ${score}`,
+											item_url: `https://www.devrant.io/rants/${id}`,
+											image_url: image.url,
+											subtitle: text
 										}));
 
 									const payload = makeMessage.templateGeneric(elements);
