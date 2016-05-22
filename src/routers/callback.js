@@ -80,9 +80,6 @@ function create() {
 									log('command is "hello"');
 
 									const profile = yield getProfile(id);
-
-									log('fetched profile: ', JSON.stringify(profile, null, 4));
-
 									const payload = makeMessage.text(`Hello ${profile.first_name}`);
 									const res = yield send(id, payload);
 
@@ -99,12 +96,15 @@ function create() {
 									const elements = posts
 										.slice(0, maxItems)
 										.map(({
-											name, url, tagline, thumbnail = { }
+											name,
+											url,
+											tagline,
+											thumbnail = { }
 										}) => ({
 											title: name,
+											subtitle: tagline,
 											item_url: `https://producthunt.com/${url}`,
-											image_url: thumbnail.image_url,
-											subtitle: tagline
+											image_url: thumbnail.image_url
 										}));
 
 									const payload = makeMessage.templateGeneric(elements);
@@ -118,15 +118,23 @@ function create() {
 								if (isDevrant) {
 									log('command is "devrant"');
 
+									const URL_BASE = 'https://www.devrant.io';
+									const DEFAULT_IMG = `${URL_BASE}/static/devrant/img/landing/simple-guy2.png`;
+
 									const rants = yield devrant.recent();
 									const elements = rants
 										.map(({
-											id, text, score, attached_image:image = { }
+											id,
+											text,
+											score,
+											attached_image: {
+												url = DEFAULT_IMG
+											}
 										}) => ({
 											title: `score: ${score}`,
-											item_url: `https://www.devrant.io/rants/${id}`,
-											image_url: image.url || 'https://www.devrant.io/static/devrant/img/cartoon1.png',
-											subtitle: text
+											subtitle: text,
+											item_url: `${URL_BASE}/rants/${id}`,
+											image_url: url
 										}));
 
 									const payload = makeMessage.templateGeneric(elements);
