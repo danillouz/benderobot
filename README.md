@@ -1,9 +1,11 @@
-# benderobot
-Bender the facebook messenger bot **[WIP]**.
+# Benderobot
+Bender the facebook messenger bot.
+
+**Proof of Concept** and a **work in progress**.
 
 ![benderobot](https://raw.githubusercontent.com/danillouz/benderobot/master/img/benderobot.png "benderobot")
 
-[Retro Bender image attribution](https://dribbble.com/shots/2686048-I-Am-Retro-Bender)
+Retro Bender image  [attribution](https://dribbble.com/shots/2686048-I-Am-Retro-Bender).
 
 ## What can Bender do?
 Bender can say hello:
@@ -14,9 +16,14 @@ Bender can fetch todays most popular posts from [Product Hunt](https://www.produ
 
 ![bender fetches from product hunt](img/bender-ph.gif)
 
+Bender can fetch the "algo" feed from [devRant](https://www.devrant.io/):
+
+![bender fetches from devrant](img/bender-devrant.gif)
+
 _Note that you can't find Benderobot on facebook (yet), so
 if you want to try it out, you need to run the API yourself
-by following the instructions._
+by following the instructions. This also means you have to
+create your own facebook app and page._
 
 ## Facebook quick start
 The API is being built following the [quick start quide](https://developers.facebook.com/docs/messenger-platform/quickstart).
@@ -35,7 +42,7 @@ The API will run on port `8888` by default and can be run with
 _* See the [facebook quick start quide](https://developers.facebook.com/docs/messenger-platform/quickstart) on how to obtain this token._
 
 ## Deployment
-Recommend way to deploy is using heroku, following the [get started guide](https://devcenter.heroku.com/articles/getting-started-with-nodejs#introduction)
+Recommend way to deploy is using heroku, following the [get started guide](https://devcenter.heroku.com/articles/getting-started-with-nodejs#introduction).
 
 ## Documentation
 TODO
